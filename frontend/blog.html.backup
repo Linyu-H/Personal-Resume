@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="林宇航的技术博客 - 分享全栈开发经验与技术思考" />
+    <title>博客 | 林宇航</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <link rel="stylesheet" href="./css/micro-interactions.css" />
+    <style>
+      /* Navigation and Page Header */
+      /* Navigation */
+      .site-shell {
+        position: relative;
+        z-index: 1;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 72px;
+        padding: 0 32px;
+        background: rgba(246, 243, 237, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      [data-theme="dark"] .nav {
+        background: rgba(26, 29, 35, 0.85);
+      }
+
+      .brand {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        transition: color 0.3s ease;
+      }
+
+      .brand:hover {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .nav-links a {
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        background: rgba(35, 79, 143, 0.08);
+        color: var(--accent);
+      }
+
+      .page-header {
+        padding: 80px 32px 60px;
+        text-align: center;
+      }
+
+      .page-title {
+        margin: 0 0 16px;
+        font-size: clamp(48px, 8vw, 72px);
+        line-height: 1;
+        letter-spacing: -0.06em;
+      }
+
+      .page-subtitle {
+        max-width: 640px;
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 0 20px;
+        }
+
+        .page-header {
+          padding: 60px 20px 40px;
+        }
+      }
+
+      /* 博客页面特定样式 */
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px 100px;
+      }
+
+      .blog-card {
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        transition: all 0.4s ease;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .blog-card-image {
+        width: 100%;
+        height: 220px;
+        background: var(--accent-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: var(--accent);
+      }
+
+      .blog-card-content {
+        padding: 24px;
+      }
+
+      .blog-card-title {
+        margin: 0 0 12px;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .blog-card-meta {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .blog-card-summary {
+        margin: 0 0 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .blog-tag {
+        padding: 4px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .blog-tag:hover {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      /* 搜索和筛选栏 */
+      .filter-section {
+        max-width: 1200px;
+        margin: 0 auto 48px;
+        padding: 0 32px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .search-input {
+        flex: 1;
+        min-height: 48px;
+        padding: 12px 20px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--text);
+        font-size: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+
+      .search-btn {
+        min-height: 48px;
+        padding: 0 32px;
+        border: 2px solid var(--accent);
+        border-radius: 999px;
+        background: var(--accent);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .search-btn:hover {
+        background: #1a3d6f;
+        border-color: #1a3d6f;
+        transform: translateY(-2px);
+      }
+
+      .tag-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .tag-filter-btn {
+        padding: 8px 20px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .tag-filter-btn:hover,
+      .tag-filter-btn.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+        color: var(--muted);
+      }
+
+      .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .blog-grid,
+        .filter-section {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scroll-progress"></div>
+
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">林宇航</a>
+        <div class="nav-links">
+          <a href="/#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html">作品集</a>
+          <a href="blog.html" class="active">博客</a>
+          <a href="/#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <h1 class="page-title animate-on-scroll fade-in-up">技术博客</h1>
+        <p class="page-subtitle animate-on-scroll fade-in-up animate-delay-1">
+          分享全栈开发经验、技术思考与实践总结
+        </p>
+      </header>
+
+      <!-- Filter Section -->
+      <section class="filter-section">
+        <div class="search-box animate-on-scroll fade-in-up animate-delay-2">
+          <input type="text" class="search-input" id="search-input" placeholder="搜索文章标题或内容..." />
+          <button class="search-btn ripple" id="search-btn">搜索</button>
+        </div>
+        <div class="tag-filter animate-on-scroll fade-in-up animate-delay-3" id="tag-filter">
+          <button class="tag-filter-btn ripple active" data-tag="all">全部</button>
+          <!-- 动态加载标签 -->
+        </div>
+      </section>
+
+      <!-- Blog Grid -->
+      <main class="blog-grid" id="blog-grid">
+        <!-- 博客卡片将通过 JS 动态加载 -->
+        <div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <p>正在加载博客文章...</p>
+        </div>
+      </main>
+    </div>
+
+    <script src="./js/theme.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/micro-interactions.js"></script>
+    <script src="./js/particles.js"></script>
+    <script>
+      // 博客列表页逻辑
+      let allBlogs = [];
+      let currentTag = 'all';
+      let searchQuery = '';
+
+      // 加载博客列表
+      async function loadBlogs() {
+        try {
+          const response = await fetch('/api/blogs');
+          const result = await response.json();
+
+          if (result.success) {
+            allBlogs = result.data;
+            renderBlogs(allBlogs);
+            loadTags();
+          }
+        } catch (error) {
+          console.error('加载博客失败:', error);
+          document.getElementById('blog-grid').innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">❌</div>
+              <p>加载失败，请稍后重试</p>
+            </div>
+          `;
+        }
+      }
+
+      // 渲染博客列表
+      function renderBlogs(blogs) {
+        const grid = document.getElementById('blog-grid');
+
+        if (blogs.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <p>没有找到相关文章</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = blogs.map((blog, index) => `
+          <article class="blog-card animate-on-scroll fade-in-up animate-delay-${Math.min(index % 3 + 1, 6)}"
+                   onclick="location.href='blog-detail.html?slug=${blog.slug}'">
+            <div class="blog-card-image">📄</div>
+            <div class="blog-card-content">
+              <h2 class="blog-card-title">${blog.title}</h2>
+              <div class="blog-card-meta">
+                <span>📅 ${new Date(blog.created_at).toLocaleDateString('zh-CN')}</span>
+                <span>👁️ ${blog.views}</span>
+              </div>
+              <p class="blog-card-summary">${blog.summary || '暂无摘要'}</p>
+              <div class="blog-tags">
+                ${blog.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+              </div>
+            </div>
+          </article>
+        `).join('');
+
+        // 重新观察动画元素
+        window.dispatchEvent(new Event('contentLoaded'));
+      }
+
+      // 加载标签
+      async function loadTags() {
+        try {
+          const response = await fetch('/api/blogs/meta/tags');
+          const result = await response.json();
+
+          if (result.success && result.data.length > 0) {
+            const tagFilter = document.getElementById('tag-filter');
+            const allButton = tagFilter.querySelector('[data-tag="all"]');
+
+            result.data.forEach(tag => {
+              const button = document.createElement('button');
+              button.className = 'tag-filter-btn ripple';
+              button.dataset.tag = tag;
+              button.textContent = tag;
+              tagFilter.appendChild(button);
+            });
+          }
+        } catch (error) {
+          console.error('加载标签失败:', error);
+        }
+      }
+
+      // 筛选博客
+      function filterBlogs() {
+        let filtered = allBlogs;
+
+        // 按标签筛选
+        if (currentTag !== 'all') {
+          filtered = filtered.filter(blog => blog.tags.includes(currentTag));
+        }
+
+        // 按搜索关键词筛选
+        if (searchQuery) {
+          filtered = filtered.filter(blog =>
+            blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            blog.summary.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+
+        renderBlogs(filtered);
+      }
+
+      // 标签点击事件
+      document.getElementById('tag-filter').addEventListener('click', (e) => {
+        if (e.target.classList.contains('tag-filter-btn')) {
+          // 更新激活状态
+          document.querySelectorAll('.tag-filter-btn').forEach(btn => btn.classList.remove('active'));
+          e.target.classList.add('active');
+
+          // 更新当前标签
+          currentTag = e.target.dataset.tag;
+          filterBlogs();
+        }
+      });
+
+      // 搜索功能
+      document.getElementById('search-btn').addEventListener('click', () => {
+        searchQuery = document.getElementById('search-input').value.trim();
+        filterBlogs();
+      });
+
+      document.getElementById('search-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          searchQuery = e.target.value.trim();
+          filterBlogs();
+        }
+      });
+
+      // 页面加载时获取数据
+      loadBlogs();
+    </script>
+  </body>
+</html>

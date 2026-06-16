@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="林宇航的个人网站 - Java 后端开发 / Web 全栈工程师" />
+    <title>林宇航 | 个人网站</title>
+    <style>
+      :root {
+        --bg: #f6f3ed;
+        --paper: #fffdf8;
+        --text: #1f252d;
+        --muted: #68717d;
+        --line: #ded8cc;
+        --accent: #234f8f;
+        --accent-soft: #eef4fb;
+        --shadow: 0 18px 45px rgba(55, 47, 36, 0.08);
+        --shadow-lg: 0 24px 60px rgba(55, 47, 36, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(90deg, rgba(31, 37, 45, 0.035) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(31, 37, 45, 0.03) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 80%);
+        z-index: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .site-shell {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Navigation */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 72px;
+        padding: 0 32px;
+        background: rgba(246, 243, 237, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+        transition: background-color 0.3s ease;
+      }
+
+      .brand {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        transition: color 0.3s ease;
+      }
+
+      .brand:hover {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .nav-links a {
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(35, 79, 143, 0.08);
+        color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      /* Hero Section */
+      .hero {
+        position: relative;
+        min-height: calc(100vh - 72px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 32px;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(35, 79, 143, 0.08) 0%, transparent 70%);
+        pointer-events: none;
+        animation: pulse 8s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 0.5;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          opacity: 0.8;
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        text-align: center;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .kicker {
+        display: inline-block;
+        margin: 0 0 24px;
+        padding: 8px 20px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        box-shadow: var(--shadow);
+      }
+
+      h1 {
+        margin: 0 0 32px;
+        font-size: clamp(64px, 10vw, 120px);
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+        background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .tagline {
+        max-width: 680px;
+        margin: 0 auto 48px;
+        color: var(--muted);
+        font-size: clamp(18px, 2.5vw, 24px);
+        line-height: 1.6;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 80px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 14px 32px;
+        border: 2px solid var(--text);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(31, 37, 45, 0.15);
+      }
+
+      .button.primary {
+        background: var(--text);
+        color: var(--paper);
+      }
+
+      .button.primary:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      /* Stats Section */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .stat-card {
+        padding: 32px 24px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(255, 253, 248, 0.82);
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+      }
+
+      .stat-number {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      /* Featured Projects Section */
+      .section {
+        padding: 100px 32px;
+      }
+
+      .section-header {
+        max-width: 1200px;
+        margin: 0 auto 64px;
+        text-align: center;
+      }
+
+      .section-title {
+        margin: 0 0 16px;
+        font-size: clamp(36px, 5vw, 56px);
+        letter-spacing: -0.04em;
+      }
+
+      .section-subtitle {
+        max-width: 640px;
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .project-card {
+        position: relative;
+        padding: 36px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+      }
+
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent), #5689c7);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+      }
+
+      .project-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .project-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        margin-bottom: 24px;
+        border-radius: 18px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .project-title {
+        margin: 0 0 12px;
+        font-size: 24px;
+        letter-spacing: -0.02em;
+      }
+
+      .project-desc {
+        margin: 0 0 20px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .project-tags span {
+        padding: 6px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .project-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .project-link:hover {
+        gap: 8px;
+      }
+
+      .project-link::after {
+        content: "→";
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      .project-link:hover::after {
+        transform: translateX(4px);
+      }
+
+      /* Footer */
+      .footer {
+        padding: 64px 32px;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 253, 248, 0.5);
+      }
+
+      .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .footer-links a {
+        color: var(--muted);
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+      }
+
+      .footer-text {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav {
+          padding: 0 20px;
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 60px 20px;
+        }
+
+        .section {
+          padding: 60px 20px;
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">林宇航</a>
+        <div class="nav-links">
+          <a href="#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html">作品集</a>
+          <a href="#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <span class="kicker">Java Backend / Web Full Stack</span>
+          <h1>林宇航</h1>
+          <p class="tagline">
+            专注于 Java 后端开发与 Web 全栈工程。从接口设计到部署上线，追求简洁高效的工程实践。
+          </p>
+          <div class="hero-actions">
+            <a href="resume.html" class="button primary">查看简历</a>
+            <a href="portfolio.html" class="button">浏览作品</a>
+          </div>
+          <div class="stats">
+            <div class="stat-card">
+              <span class="stat-number">6+</span>
+              <span class="stat-label">完成项目</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">100+</span>
+              <span class="stat-label">累计用户</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">3</span>
+              <span class="stat-label">国家级奖项</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Projects -->
+      <section class="section" id="featured">
+        <div class="section-header">
+          <h2 class="section-title">精选项目</h2>
+          <p class="section-subtitle">
+            从 AI 图片生成到实时数据监控，涵盖全栈开发、自动化和云服务的实践经验
+          </p>
+        </div>
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-icon">AI</div>
+            <h3 class="project-title">Lcode Image</h3>
+            <p class="project-desc">
+              AI 图片生成平台，支持文生图、参考图编辑、社区分享和管理后台。基于 Vue 3 和 Node.js，累计使用量 100+。
+            </p>
+            <div class="project-tags">
+              <span>Vue 3</span>
+              <span>Node.js</span>
+              <span>Docker</span>
+              <span>AI</span>
+            </div>
+            <a href="https://image2.lcode.space/" class="project-link" target="_blank" rel="noreferrer">访问项目</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">📊</div>
+            <h3 class="project-title">实时热点监控系统</h3>
+            <p class="project-desc">
+              聚合 30+ 平台热点数据，实时 WebSocket 推送。使用 Spring Boot WebFlux 异步抓取，ECharts 可视化展示。
+            </p>
+            <div class="project-tags">
+              <span>Spring Boot</span>
+              <span>WebSocket</span>
+              <span>ECharts</span>
+              <span>响应式</span>
+            </div>
+            <a href="https://hot-data.lcode.space/" class="project-link" target="_blank" rel="noreferrer">访问项目</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">📄</div>
+            <h3 class="project-title">智能简历制作平台</h3>
+            <p class="project-desc">
+              可视化简历编辑器，集成 AI 优化、模拟面试和会员体系。Spring Boot 3 + Vue 3 全栈实现，支持 Docker 一键部署。
+            </p>
+            <div class="project-tags">
+              <span>Spring Boot 3</span>
+              <span>Vue 3</span>
+              <span>AI 集成</span>
+              <span>SQLite</span>
+            </div>
+            <a href="https://resume.lcode.space" class="project-link" target="_blank" rel="noreferrer">访问项目</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">🖼️</div>
+            <h3 class="project-title">梨素材</h3>
+            <p class="project-desc">
+              图片素材管理平台，基于腾讯云 COS 实现文件服务，结合数据万象解析图片信息，支持批量抓取和管理。
+            </p>
+            <div class="project-tags">
+              <span>Spring Boot</span>
+              <span>腾讯云 COS</span>
+              <span>图片处理</span>
+            </div>
+            <a href="http://111.231.51.40/" class="project-link" target="_blank" rel="noreferrer">访问项目</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">🤖</div>
+            <h3 class="project-title">AI 中转站</h3>
+            <p class="project-desc">
+              AI 模型聚合服务，基于 new-api 搭建，统一管理多种 AI 模型接口，便于账号、额度和调用集中维护。
+            </p>
+            <div class="project-tags">
+              <span>new-api</span>
+              <span>模型服务</span>
+              <span>运维</span>
+            </div>
+            <a href="https://api.lcode.store/" class="project-link" target="_blank" rel="noreferrer">访问项目</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">📚</div>
+            <h3 class="project-title">更多项目</h3>
+            <p class="project-desc">
+              包括学习通软件、浏览器自动化脚本等多个校园协作和个人实验项目。
+            </p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>自动化</span>
+              <span>协作开发</span>
+            </div>
+            <a href="portfolio.html" class="project-link">查看全部</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="section" id="contact" style="padding: 80px 32px;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+          <h2 class="section-title" style="margin-bottom: 24px;">联系我</h2>
+          <p class="section-subtitle" style="margin-bottom: 48px;">
+            欢迎通过以下方式与我取得联系，或查看我的开源项目
+          </p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 32px;">
+            <a href="https://github.com/Linyu-H" class="button primary" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://gitee.com/lin-yuhang1113" class="button" target="_blank" rel="noreferrer">Gitee</a>
+            <a href="mailto:your-email@example.com" class="button">发送邮件</a>
+          </div>
+          <div style="padding: 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--paper); box-shadow: var(--shadow);">
+            <p style="margin: 0; color: var(--muted); line-height: 1.8;">
+              <strong style="color: var(--text); display: block; margin-bottom: 8px;">开放协作</strong>
+              对技术交流、开源协作和项目合作持开放态度。<br>
+              如需完整简历，可访问 <a href="resume.html" style="color: var(--accent); font-weight: 700;">简历页面</a> 或直接使用浏览器打印功能保存 PDF。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="https://github.com/Linyu-H" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://gitee.com/lin-yuhang1113" target="_blank" rel="noreferrer">Gitee</a>
+            <a href="resume.html">简历</a>
+            <a href="portfolio.html">作品集</a>
+          </div>
+          <p class="footer-text">© 2025 林宇航 · Java Backend & Web Full Stack Developer</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

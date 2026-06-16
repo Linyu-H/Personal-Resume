@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="林宇航的作品集 - 完整项目展示与技术细节" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <link rel="stylesheet" href="./css/micro-interactions.css" />
+    <title>作品集 | 林宇航</title>
+    <style>
+      /* Filter */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-2);
+        margin: 0 auto var(--space-7);
+      }
+
+      .filter-btn {
+        min-height: 40px;
+        padding: 8px 18px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-pill);
+        background: var(--paper);
+        color: var(--muted);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+
+      .filter-btn:hover {
+        color: var(--text-strong);
+        border-color: var(--accent);
+      }
+
+      .filter-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--on-accent);
+      }
+
+      /* Projects list */
+      .projects-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-5);
+      }
+
+      .project-item { padding: var(--space-7); }
+
+      .project-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--space-5);
+        flex-wrap: wrap;
+        margin-bottom: var(--space-5);
+        padding-bottom: var(--space-5);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .project-name {
+        margin: 0 0 var(--space-2);
+        font-size: clamp(21px, 3vw, 26px);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .project-summary {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .project-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .highlights { margin-bottom: var(--space-5); }
+
+      .highlights h4 {
+        margin: 0 0 var(--space-3);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .highlights ul {
+        margin: 0;
+        padding-left: 1.25em;
+      }
+
+      .highlights li {
+        margin-bottom: var(--space-2);
+        line-height: 1.65;
+      }
+
+      .tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .proj-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--space-4);
+        margin-top: var(--space-5);
+        padding: var(--space-5);
+        border-radius: var(--radius-md);
+        background: var(--surface-2);
+      }
+
+      .proj-stat { text-align: center; }
+
+      .proj-stat-value {
+        display: block;
+        margin-bottom: var(--space-1);
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--text-strong);
+      }
+
+      .proj-stat-label {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 768px) {
+        .project-item { padding: var(--space-5); }
+        .project-actions { width: 100%; }
+        .project-actions .btn { flex: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">
+          <span class="brand-mark">林</span>
+          <span>林宇航</span>
+        </a>
+        <div class="nav-links">
+          <a href="/#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html" class="active">作品集</a>
+          <a href="blog.html">博客</a>
+          <a href="/#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <span class="eyebrow">作品集</span>
+        <h1 class="page-title">项目与实践</h1>
+        <p class="page-subtitle">完整项目展示，涵盖 AI 应用、数据可视化、全栈开发与自动化工程。</p>
+      </header>
+
+      <main class="container" style="padding-bottom: var(--space-9);">
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">全部</button>
+          <button class="filter-btn" data-filter="fullstack">全栈</button>
+          <button class="filter-btn" data-filter="ai">AI 应用</button>
+          <button class="filter-btn" data-filter="backend">后端</button>
+          <button class="filter-btn" data-filter="automation">自动化</button>
+        </div>
+
+        <!-- Projects -->
+        <div class="projects-list" id="projects-container">
+          <div class="loading">正在加载项目…</div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-links">
+            <a href="/">首页</a>
+            <a href="resume.html">简历</a>
+            <a href="blog.html">博客</a>
+            <a href="admin.html">管理</a>
+          </div>
+          <p class="footer-text">© 2025 林宇航 · Java Backend &amp; Web Full Stack Developer</p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // ---- 从后端动态加载项目 ----
+      const projectsContainer = document.getElementById('projects-container');
+
+      function escapeHtml(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function renderProjectItem(p) {
+        const tech = (p.tech_stack || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+        const stats = p.stats && Object.keys(p.stats).length
+          ? `<div class="proj-stats">${Object.entries(p.stats).map(([k, v]) => `
+              <div class="proj-stat">
+                <span class="proj-stat-value">${escapeHtml(v)}</span>
+                <span class="proj-stat-label">${escapeHtml(k)}</span>
+              </div>`).join('')}</div>`
+          : '';
+        const features = (p.description || '').split('\n').map(s => s.trim()).filter(Boolean);
+        const highlights = features.length
+          ? `<div class="highlights">
+               <h4>核心功能</h4>
+               <ul>${features.map(f => `<li>${f}</li>`).join('')}</ul>
+             </div>`
+          : '';
+        const links = [];
+        if (p.demo_url) links.push(`<a href="${escapeHtml(p.demo_url)}" class="btn btn--primary btn--sm ripple" target="_blank" rel="noreferrer">在线访问</a>`);
+        if (p.source_url) links.push(`<a href="${escapeHtml(p.source_url)}" class="btn btn--ghost btn--sm" target="_blank" rel="noreferrer">源码</a>`);
+        links.push(`<a href="project-detail.html?slug=${encodeURIComponent(p.slug)}" class="btn btn--ghost btn--sm">详情</a>`);
+        const cat = (p.category || '').replace(/,/g, ' ');
+
+        return `
+          <article class="card project-item animate-on-scroll fade-in-up" data-category="${escapeHtml(cat)}">
+            <div class="project-top">
+              <div>
+                <h2 class="project-name">${escapeHtml(p.name)}</h2>
+                <p class="project-summary">${escapeHtml(p.summary || '')}</p>
+              </div>
+              <div class="project-actions">${links.join('')}</div>
+            </div>
+            ${highlights}
+            ${tech ? `<div class="tech">${tech}</div>` : ''}
+            ${stats}
+          </article>`;
+      }
+
+      function bindFilters() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectItems = document.querySelectorAll('.project-item');
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter;
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            projectItems.forEach(item => {
+              if (filter === 'all' || item.dataset.category.includes(filter)) {
+                item.style.display = '';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+      }
+
+      async function loadProjects() {
+        try {
+          const res = await fetch('/api/projects');
+          const result = await res.json();
+          if (result.success && result.data.length) {
+            projectsContainer.innerHTML = result.data.map(renderProjectItem).join('');
+          } else {
+            projectsContainer.innerHTML = `<div class="loading">暂无项目</div>`;
+          }
+        } catch (e) {
+          console.error('加载项目失败:', e);
+          projectsContainer.innerHTML = `<div class="loading">加载失败，请稍后重试</div>`;
+        }
+        bindFilters();
+        window.dispatchEvent(new Event('contentLoaded'));
+      }
+
+      loadProjects();
+    </script>
+    <script src="./js/theme.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/micro-interactions.js"></script>
+    <script src="./js/particles.js"></script>
+  </body>
+</html>

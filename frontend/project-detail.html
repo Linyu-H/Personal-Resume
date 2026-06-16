@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="项目详情" />
+    <title>项目详情 | 林宇航</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <link rel="stylesheet" href="./css/micro-interactions.css" />
+    <style>
+      .project-detail-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: var(--space-7) var(--space-5) var(--space-9);
+      }
+
+      .project-hero {
+        margin-bottom: var(--space-7);
+        padding: var(--space-7);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .project-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        background: var(--accent);
+      }
+
+      .project-title {
+        margin: 0 0 var(--space-3);
+        font-size: clamp(28px, 5vw, 44px);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: -0.03em;
+        color: var(--text-strong);
+      }
+
+      .project-summary {
+        margin: 0 0 var(--space-5);
+        font-size: 18px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .project-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 11px 20px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        color: var(--text-strong);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      }
+
+      .btn-link:hover { background: var(--surface-2); transform: translateY(-1px); }
+
+      .btn-link.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--on-accent);
+      }
+
+      .btn-link.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+      .project-section { margin-bottom: var(--space-8); }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        margin: 0 0 var(--space-5);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text-strong);
+      }
+
+      .section-title::before {
+        content: "";
+        width: 4px;
+        height: 22px;
+        border-radius: var(--radius-pill);
+        background: var(--accent);
+      }
+
+      .project-description {
+        padding: var(--space-6);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--text);
+      }
+
+      .features-list { display: grid; gap: var(--space-3); }
+
+      .feature-item {
+        padding: var(--space-4) var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        line-height: 1.65;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      }
+
+      .feature-item:hover {
+        transform: translateX(4px);
+        border-color: var(--accent);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .feature-item strong { color: var(--accent); }
+
+      .tech-stack-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: var(--space-3);
+      }
+
+      .tech-badge {
+        padding: var(--space-3) var(--space-4);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      }
+
+      .tech-badge:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: var(--space-4);
+      }
+
+      .stat-card {
+        padding: var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        text-align: center;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .stat-value {
+        display: block;
+        margin-bottom: var(--space-1);
+        font-size: 30px;
+        font-weight: 800;
+        color: var(--text-strong);
+      }
+
+      .stat-label { color: var(--muted); font-size: 14px; }
+
+      .project-nav {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-top: var(--space-8);
+        padding-top: var(--space-5);
+        border-top: 1px solid var(--line);
+      }
+
+      @media (max-width: 768px) {
+        .project-detail-container { padding: var(--space-6) var(--space-4) var(--space-8); }
+        .project-hero { padding: var(--space-5); }
+        .btn-link { flex: 1; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">
+          <span class="brand-mark">林</span>
+          <span>林宇航</span>
+        </a>
+        <div class="nav-links">
+          <a href="/#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html" class="active">作品集</a>
+          <a href="blog.html">博客</a>
+          <a href="/#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Project Content -->
+      <main class="project-detail-container" id="project-content">
+        <div class="loading">正在加载项目详情…</div>
+      </main>
+    </div>
+
+    <script src="./js/theme.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/micro-interactions.js"></script>
+    <script src="./js/particles.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
+
+      if (!slug) {
+        showError('项目不存在');
+      } else {
+        loadProjectDetail(slug);
+      }
+
+      async function loadProjectDetail(slug) {
+        try {
+          const response = await fetch(`/api/projects/${slug}`);
+          const result = await response.json();
+          if (result.success) {
+            renderProject(result.data);
+          } else {
+            showError('项目不存在');
+          }
+        } catch (error) {
+          console.error('加载失败:', error);
+          showError('加载失败，请稍后重试');
+        }
+      }
+
+      function renderProject(project) {
+        document.title = `${project.name} | 林宇航`;
+
+        const description = project.description || project.summary;
+        const features = description.split('\n').filter(line => line.trim());
+
+        document.getElementById('project-content').innerHTML = `
+          <div class="animate-on-scroll fade-in-up">
+            <section class="project-hero">
+              <h1 class="project-title">${project.name}</h1>
+              <p class="project-summary">${project.summary}</p>
+              <div class="project-links">
+                ${project.demo_url ? `
+                  <a href="${project.demo_url}" class="btn-link primary ripple" target="_blank" rel="noreferrer">🚀 在线演示</a>
+                ` : ''}
+                ${project.source_url ? `
+                  <a href="${project.source_url}" class="btn-link ripple" target="_blank" rel="noreferrer">📦 源码</a>
+                ` : ''}
+                <button onclick="location.href='portfolio.html'" class="btn-link ripple">← 返回作品集</button>
+              </div>
+            </section>
+
+            <section class="project-section animate-on-scroll fade-in-up animate-delay-1">
+              <h2 class="section-title">项目介绍</h2>
+              <div class="project-description">${description}</div>
+            </section>
+
+            ${features.length > 1 ? `
+              <section class="project-section animate-on-scroll fade-in-up animate-delay-2">
+                <h2 class="section-title">核心功能</h2>
+                <div class="features-list">
+                  ${features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
+                </div>
+              </section>
+            ` : ''}
+
+            ${project.tech_stack && project.tech_stack.length > 0 ? `
+              <section class="project-section animate-on-scroll fade-in-up animate-delay-3">
+                <h2 class="section-title">技术栈</h2>
+                <div class="tech-stack-grid">
+                  ${project.tech_stack.map(tech => `<div class="tech-badge">${tech}</div>`).join('')}
+                </div>
+              </section>
+            ` : ''}
+
+            ${project.stats && Object.keys(project.stats).length > 0 ? `
+              <section class="project-section animate-on-scroll fade-in-up animate-delay-4">
+                <h2 class="section-title">项目数据</h2>
+                <div class="stats-grid">
+                  ${Object.entries(project.stats).map(([key, value]) => `
+                    <div class="stat-card">
+                      <span class="stat-value">${value}</span>
+                      <span class="stat-label">${key}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </section>
+            ` : ''}
+
+            <nav class="project-nav">
+              <button onclick="location.href='portfolio.html'" class="btn-link ripple">← 返回作品集</button>
+              <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-link ripple">回到顶部 ↑</button>
+            </nav>
+          </div>
+        `;
+
+        window.dispatchEvent(new Event('contentLoaded'));
+      }
+
+      function showError(message) {
+        document.getElementById('project-content').innerHTML = `
+          <div class="loading">
+            <p>${message}</p>
+            <button onclick="location.href='portfolio.html'" class="btn btn--primary ripple" style="margin-top: 24px;">
+              返回作品集
+            </button>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>

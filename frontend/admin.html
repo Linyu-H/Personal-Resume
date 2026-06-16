@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>管理后台 | 林宇航</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <style>
+      .admin-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: var(--space-6);
+      }
+
+      .login-container {
+        max-width: 400px;
+        margin: 96px auto;
+        padding: var(--space-7);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-md);
+      }
+
+      .login-title {
+        margin: 0 0 var(--space-6);
+        font-size: 24px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .form-group { margin-bottom: var(--space-5); }
+
+      .form-label {
+        display: block;
+        margin-bottom: var(--space-2);
+        color: var(--text-strong);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .form-input {
+        width: 100%;
+        min-height: 44px;
+        padding: 11px 14px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        color: var(--text);
+        font: inherit;
+        font-size: 15px;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--ring);
+      }
+
+      .btn {
+        width: 100%;
+        min-height: 46px;
+        padding: 12px;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius-md);
+        background: var(--accent);
+        color: var(--on-accent);
+        font: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+      }
+
+      .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+      .btn:active { transform: translateY(1px); }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-6);
+        padding: var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .admin-title { margin: 0; font-size: 22px; font-weight: 800; }
+
+      .btn-logout {
+        padding: 9px 18px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: var(--text-strong);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+
+      .btn-logout:hover {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: #fff;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+      }
+
+      .stat-card {
+        padding: var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+
+      .stat-value { font-size: 32px; font-weight: 800; color: var(--text-strong); }
+      .stat-label { margin-top: var(--space-2); color: var(--muted); font-size: 14px; }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-bottom: var(--space-5);
+        padding-bottom: var(--space-2);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .tab {
+        padding: 10px 18px;
+        border: none;
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease, color 0.18s ease;
+      }
+
+      .tab:hover { background: var(--surface-2); color: var(--text-strong); }
+      .tab.active { background: var(--accent); color: var(--on-accent); }
+
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+
+      .content-card {
+        padding: var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .btn-add {
+        margin-bottom: var(--space-5);
+        padding: 10px 18px;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius-md);
+        background: var(--accent);
+        color: var(--on-accent);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease, border-color 0.18s ease;
+      }
+
+      .btn-add:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+      .table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+
+      .table th {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 12.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        color: var(--text);
+      }
+
+      .table tbody tr:hover { background: var(--surface-2); }
+
+      .btn-edit, .btn-delete {
+        padding: 6px 12px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-right: var(--space-2);
+        transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      }
+
+      .btn-edit { background: var(--accent-soft); color: var(--accent); }
+      .btn-edit:hover { background: var(--accent); color: var(--on-accent); }
+
+      .btn-delete { background: transparent; border-color: var(--line-strong); color: var(--danger); }
+      .btn-delete:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(2, 6, 23, 0.55);
+        backdrop-filter: blur(4px);
+      }
+
+      .modal.active { display: flex; align-items: center; justify-content: center; padding: var(--space-4); }
+
+      .modal-content {
+        max-width: 760px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: var(--space-6);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-5);
+      }
+
+      .modal-title { margin: 0; font-size: 20px; font-weight: 800; }
+
+      .btn-close {
+        padding: 8px 14px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        color: var(--text-strong);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.18s ease;
+      }
+
+      .btn-close:hover { background: var(--surface-2); }
+
+      textarea.form-input {
+        min-height: 200px;
+        resize: vertical;
+        font-family: var(--font-mono);
+        line-height: 1.6;
+      }
+
+      .tag-input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        padding: var(--space-2);
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+      }
+
+      .tag-input-container:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--ring);
+      }
+
+      .tag-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px;
+        border-radius: var(--radius-pill);
+        background: var(--accent);
+        color: var(--on-accent);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .tag-remove { cursor: pointer; font-weight: 700; opacity: 0.85; }
+      .tag-remove:hover { opacity: 1; }
+
+      .alert {
+        padding: 11px 14px;
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-4);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .alert-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+      .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+      @media (max-width: 600px) {
+        .admin-container { padding: var(--space-4); }
+        .login-container { margin: 48px auto; padding: var(--space-6); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 登录页面 -->
+    <div id="login-page" class="login-container">
+      <h1 class="login-title">🔐 管理后台</h1>
+      <div class="form-group">
+        <label class="form-label">密码</label>
+        <input type="password" id="password-input" class="form-input" placeholder="请输入管理密码" />
+      </div>
+      <button class="btn" onclick="login()">登录</button>
+    </div>
+
+    <!-- 管理后台主页 -->
+    <div id="admin-page" style="display: none;">
+      <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+          <h1 class="admin-title">📊 管理后台</h1>
+          <button class="btn-logout" onclick="logout()">退出登录</button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid" id="stats-grid">
+          <!-- 动态加载 -->
+        </div>
+
+        <!-- 标签页 -->
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('blogs')">博客管理</button>
+          <button class="tab" onclick="switchTab('projects')">项目管理</button>
+          <button class="tab" onclick="switchTab('contacts')">联系记录</button>
+        </div>
+
+        <!-- 博客管理 -->
+        <div id="tab-blogs" class="tab-content active">
+          <div class="content-card">
+            <button class="btn-add" onclick="showBlogModal()">+ 添加博客</button>
+            <table class="table" id="blogs-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>标题</th>
+                  <th>Slug</th>
+                  <th>浏览量</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 动态加载 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 项目管理 -->
+        <div id="tab-projects" class="tab-content">
+          <div class="content-card">
+            <button class="btn-add" onclick="showProjectModal()">+ 添加项目</button>
+            <table class="table" id="projects-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>名称</th>
+                  <th>Slug</th>
+                  <th>分类</th>
+                  <th>精选</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 动态加载 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 联系记录 -->
+        <div id="tab-contacts" class="tab-content">
+          <div class="content-card">
+            <table class="table" id="contacts-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>姓名</th>
+                  <th>邮箱</th>
+                  <th>主题</th>
+                  <th>时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 动态加载 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 博客编辑模态框 -->
+    <div id="blog-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="blog-modal-title">添加博客</h2>
+          <button class="btn-close" onclick="closeBlogModal()">关闭</button>
+        </div>
+        <div id="blog-alert"></div>
+        <form id="blog-form">
+          <input type="hidden" id="blog-id" />
+          <div class="form-group">
+            <label class="form-label">标题 *</label>
+            <input type="text" id="blog-title" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slug * (URL标识符，如: my-blog-post)</label>
+            <input type="text" id="blog-slug" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">摘要</label>
+            <textarea id="blog-summary" class="form-input" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">正文 * (支持 Markdown)</label>
+            <textarea id="blog-content" class="form-input" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">标签 (按回车添加)</label>
+            <div class="tag-input-container" id="blog-tags-container">
+              <input type="text" id="blog-tag-input" placeholder="输入标签后按回车" style="border: none; outline: none; background: transparent; flex: 1; color: inherit;" />
+            </div>
+          </div>
+          <button type="submit" class="btn">保存博客</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 项目编辑模态框 -->
+    <div id="project-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="project-modal-title">添加项目</h2>
+          <button class="btn-close" onclick="closeProjectModal()">关闭</button>
+        </div>
+        <div id="project-alert"></div>
+        <form id="project-form">
+          <input type="hidden" id="project-id" />
+          <div class="form-group">
+            <label class="form-label">名称 *</label>
+            <input type="text" id="project-name" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slug * (URL标识符)</label>
+            <input type="text" id="project-slug" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">简短描述</label>
+            <textarea id="project-summary" class="form-input" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">详细描述</label>
+            <textarea id="project-description" class="form-input" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">技术栈 (按回车添加)</label>
+            <div class="tag-input-container" id="project-tech-container">
+              <input type="text" id="project-tech-input" placeholder="输入技术后按回车" style="border: none; outline: none; background: transparent; flex: 1; color: inherit;" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">演示地址</label>
+            <input type="text" id="project-demo" class="form-input" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">源码地址</label>
+            <input type="text" id="project-source" class="form-input" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">分类 (逗号分隔，如: fullstack,ai)</label>
+            <input type="text" id="project-category" class="form-input" placeholder="fullstack,backend" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="project-featured" style="width: auto;" /> 设为精选项目
+            </label>
+          </div>
+          <button type="submit" class="btn">保存项目</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="./js/theme.js"></script>
+    <script>
+      let token = '';
+      let blogTags = [];
+      let projectTech = [];
+      let blogsCache = [];
+      let projectsCache = [];
+
+      // 登录
+      async function login() {
+        const password = document.getElementById('password-input').value;
+        // 通过真实接口校验密码（服务端为准）
+        const res = await fetch('/api/admin/stats?token=' + encodeURIComponent(password));
+        if (res.ok) {
+          token = password;
+          localStorage.setItem('admin_token', token);
+          showAdminPage();
+        } else {
+          alert('密码错误！');
+        }
+      }
+
+      // 退出登录
+      function logout() {
+        token = '';
+        localStorage.removeItem('admin_token');
+        document.getElementById('login-page').style.display = 'block';
+        document.getElementById('admin-page').style.display = 'none';
+      }
+
+      // 显示管理页面
+      function showAdminPage() {
+        document.getElementById('login-page').style.display = 'none';
+        document.getElementById('admin-page').style.display = 'block';
+        loadStats();
+        loadBlogs();
+        loadProjects();
+        loadContacts();
+      }
+
+      // 检查登录状态
+      window.onload = async function() {
+        const savedToken = localStorage.getItem('admin_token');
+        if (savedToken) {
+          const res = await fetch('/api/admin/stats?token=' + encodeURIComponent(savedToken));
+          if (res.ok) {
+            token = savedToken;
+            showAdminPage();
+          } else {
+            localStorage.removeItem('admin_token');
+          }
+        }
+      };
+
+      // 切换标签页
+      function switchTab(tab) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+      }
+
+      // 加载统计数据
+      async function loadStats() {
+        const res = await fetch('/api/admin/stats?token=' + token);
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('stats-grid').innerHTML = `
+            <div class="stat-card">
+              <div class="stat-value">${data.data.blogs}</div>
+              <div class="stat-label">博客文章</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${data.data.projects}</div>
+              <div class="stat-label">项目数量</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${data.data.contacts}</div>
+              <div class="stat-label">联系记录</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${data.data.totalViews}</div>
+              <div class="stat-label">总浏览量</div>
+            </div>
+          `;
+        }
+      }
+
+      // 加载博客列表
+      async function loadBlogs() {
+        const res = await fetch('/api/admin/blogs?token=' + token);
+        const data = await res.json();
+        if (data.success) {
+          blogsCache = data.data;
+          const tbody = document.querySelector('#blogs-table tbody');
+          tbody.innerHTML = data.data.map(blog => `
+            <tr>
+              <td>${blog.id}</td>
+              <td>${blog.title}</td>
+              <td>${blog.slug}</td>
+              <td>${blog.views}</td>
+              <td>${new Date(blog.created_at).toLocaleString('zh-CN')}</td>
+              <td>
+                <button class="btn-edit" onclick="editBlog(${blog.id})">编辑</button>
+                <button class="btn-delete" onclick="deleteBlog(${blog.id})">删除</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // 显示博客模态框
+      function showBlogModal(blog = null) {
+        document.getElementById('blog-modal-title').textContent = blog ? '编辑博客' : '添加博客';
+        document.getElementById('blog-id').value = blog ? blog.id : '';
+        document.getElementById('blog-title').value = blog ? blog.title : '';
+        document.getElementById('blog-slug').value = blog ? blog.slug : '';
+        document.getElementById('blog-summary').value = blog ? blog.summary : '';
+        document.getElementById('blog-content').value = blog ? blog.content : '';
+        blogTags = blog ? blog.tags : [];
+        renderBlogTags();
+        document.getElementById('blog-modal').classList.add('active');
+      }
+
+      function closeBlogModal() {
+        document.getElementById('blog-modal').classList.remove('active');
+      }
+
+      // 标签管理
+      document.getElementById('blog-tag-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const tag = e.target.value.trim();
+          if (tag && !blogTags.includes(tag)) {
+            blogTags.push(tag);
+            renderBlogTags();
+            e.target.value = '';
+          }
+        }
+      });
+
+      function renderBlogTags() {
+        const container = document.getElementById('blog-tags-container');
+        const input = document.getElementById('blog-tag-input');
+        container.innerHTML = blogTags.map(tag => `
+          <span class="tag-item">
+            ${tag}
+            <span class="tag-remove" onclick="removeTag('${tag}')">×</span>
+          </span>
+        `).join('') + input.outerHTML;
+
+        // 重新绑定事件
+        document.getElementById('blog-tag-input').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const tag = e.target.value.trim();
+            if (tag && !blogTags.includes(tag)) {
+              blogTags.push(tag);
+              renderBlogTags();
+            }
+          }
+        });
+      }
+
+      function removeTag(tag) {
+        blogTags = blogTags.filter(t => t !== tag);
+        renderBlogTags();
+      }
+
+      // 提交博客表单
+      document.getElementById('blog-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById('blog-id').value;
+        const blogData = {
+          title: document.getElementById('blog-title').value,
+          slug: document.getElementById('blog-slug').value,
+          summary: document.getElementById('blog-summary').value,
+          content: document.getElementById('blog-content').value,
+          tags: blogTags
+        };
+
+        const url = id ? `/api/admin/blogs/${id}?token=${token}` : `/api/admin/blogs?token=${token}`;
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(blogData)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('blog-alert').innerHTML = '<div class="alert alert-success">保存成功！</div>';
+          setTimeout(() => {
+            closeBlogModal();
+            loadBlogs();
+            loadStats();
+          }, 1000);
+        } else {
+          document.getElementById('blog-alert').innerHTML = `<div class="alert alert-error">${data.message}</div>`;
+        }
+      });
+
+      // 编辑博客
+      function editBlog(id) {
+        const blog = blogsCache.find(b => b.id === id);
+        if (blog) {
+          showBlogModal(blog);
+        }
+      }
+
+      // 删除博客
+      async function deleteBlog(id) {
+        if (!confirm('确定要删除这篇博客吗？')) return;
+
+        const res = await fetch(`/api/admin/blogs/${id}?token=${token}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          alert('删除成功！');
+          loadBlogs();
+          loadStats();
+        }
+      }
+
+      // 加载项目列表
+      async function loadProjects() {
+        const res = await fetch('/api/admin/projects?token=' + token);
+        const data = await res.json();
+        if (data.success) {
+          projectsCache = data.data;
+          const tbody = document.querySelector('#projects-table tbody');
+          tbody.innerHTML = data.data.map(project => `
+            <tr>
+              <td>${project.id}</td>
+              <td>${project.name}</td>
+              <td>${project.slug}</td>
+              <td>${project.category || '-'}</td>
+              <td>${project.featured ? '是' : '否'}</td>
+              <td>
+                <button class="btn-edit" onclick="editProject(${project.id})">编辑</button>
+                <button class="btn-delete" onclick="deleteProject(${project.id})">删除</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // 显示项目模态框
+      function showProjectModal(project = null) {
+        document.getElementById('project-modal-title').textContent = project ? '编辑项目' : '添加项目';
+        document.getElementById('project-id').value = project ? project.id : '';
+        document.getElementById('project-name').value = project ? project.name : '';
+        document.getElementById('project-slug').value = project ? project.slug : '';
+        document.getElementById('project-summary').value = project ? (project.summary || '') : '';
+        document.getElementById('project-description').value = project ? (project.description || '') : '';
+        document.getElementById('project-demo').value = project ? (project.demo_url || '') : '';
+        document.getElementById('project-source').value = project ? (project.source_url || '') : '';
+        document.getElementById('project-category').value = project ? (project.category || '') : '';
+        document.getElementById('project-featured').checked = project ? !!project.featured : false;
+        projectTech = project ? (project.tech_stack || []) : [];
+        renderProjectTech();
+        document.getElementById('project-alert').innerHTML = '';
+        document.getElementById('project-modal').classList.add('active');
+      }
+
+      function closeProjectModal() {
+        document.getElementById('project-modal').classList.remove('active');
+      }
+
+      // 项目技术栈标签
+      function renderProjectTech() {
+        const container = document.getElementById('project-tech-container');
+        const input = document.getElementById('project-tech-input');
+        container.innerHTML = projectTech.map(tag => `
+          <span class="tag-item">
+            ${tag}
+            <span class="tag-remove" onclick="removeProjectTech('${tag}')">×</span>
+          </span>
+        `).join('') + input.outerHTML;
+        bindProjectTechInput();
+      }
+
+      function bindProjectTechInput() {
+        document.getElementById('project-tech-input').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const tag = e.target.value.trim();
+            if (tag && !projectTech.includes(tag)) {
+              projectTech.push(tag);
+              renderProjectTech();
+            }
+          }
+        });
+      }
+
+      function removeProjectTech(tag) {
+        projectTech = projectTech.filter(t => t !== tag);
+        renderProjectTech();
+      }
+
+      // 编辑项目
+      function editProject(id) {
+        const project = projectsCache.find(p => p.id === id);
+        if (project) {
+          showProjectModal(project);
+        }
+      }
+
+      // 删除项目
+      async function deleteProject(id) {
+        if (!confirm('确定要删除这个项目吗？')) return;
+
+        const res = await fetch(`/api/admin/projects/${id}?token=${token}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          alert('删除成功！');
+          loadProjects();
+          loadStats();
+        }
+      }
+
+      // 提交项目表单
+      document.getElementById('project-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById('project-id').value;
+        const projectData = {
+          name: document.getElementById('project-name').value,
+          slug: document.getElementById('project-slug').value,
+          summary: document.getElementById('project-summary').value,
+          description: document.getElementById('project-description').value,
+          tech_stack: projectTech,
+          demo_url: document.getElementById('project-demo').value,
+          source_url: document.getElementById('project-source').value,
+          category: document.getElementById('project-category').value,
+          featured: document.getElementById('project-featured').checked
+        };
+
+        const url = id ? `/api/admin/projects/${id}?token=${token}` : `/api/admin/projects?token=${token}`;
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(projectData)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('project-alert').innerHTML = '<div class="alert alert-success">保存成功！</div>';
+          setTimeout(() => {
+            closeProjectModal();
+            loadProjects();
+            loadStats();
+          }, 1000);
+        } else {
+          document.getElementById('project-alert').innerHTML = `<div class="alert alert-error">${data.message}</div>`;
+        }
+      });
+
+      // 加载联系记录
+      async function loadContacts() {
+        const res = await fetch('/api/admin/contacts?token=' + token);
+        const data = await res.json();
+        if (data.success) {
+          const tbody = document.querySelector('#contacts-table tbody');
+          tbody.innerHTML = data.data.map(contact => `
+            <tr>
+              <td>${contact.id}</td>
+              <td>${contact.name}</td>
+              <td>${contact.email}</td>
+              <td>${contact.subject || '-'}</td>
+              <td>${new Date(contact.created_at).toLocaleString('zh-CN')}</td>
+              <td>${contact.status}</td>
+              <td>
+                <button class="btn-delete" onclick="deleteContact(${contact.id})">删除</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // 删除联系记录
+      async function deleteContact(id) {
+        if (!confirm('确定要删除这条记录吗？')) return;
+
+        const res = await fetch(`/api/admin/contacts/${id}?token=${token}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          alert('删除成功！');
+          loadContacts();
+          loadStats();
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "personal-website",
+  "version": "1.0.0",
+  "description": "林宇航的个人网站 - 全栈应用",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "init-db": "node backend/models/init-database.js",
+    "seed-projects": "node backend/models/seed-projects.js"
+  },
+  "keywords": [
+    "personal-website",
+    "portfolio",
+    "blog"
+  ],
+  "author": "林宇航",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^9.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "highlight.js": "^11.11.1",
+    "marked": "^11.2.0",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

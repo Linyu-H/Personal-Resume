@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="林宇航的个人网站 - Java 后端开发 / Web 全栈工程师" />
+    <title>林宇航 | 个人网站</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <link rel="stylesheet" href="./css/micro-interactions.css" />
+    <style>
+      /* ===== Hero ===== */
+      .hero {
+        position: relative;
+        padding: clamp(56px, 9vw, 112px) 0 var(--space-8);
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -160px;
+        left: 50%;
+        width: 720px;
+        height: 480px;
+        max-width: 120vw;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse at center, var(--accent-soft) 0%, transparent 70%);
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .pill-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-pill);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+        color: var(--accent);
+        font-size: 12.5px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .pill-eyebrow .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .hero h1 {
+        margin: var(--space-5) 0 var(--space-4);
+        font-size: clamp(40px, 6.5vw, 68px);
+        line-height: 1.04;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--text-strong);
+      }
+
+      .hero .lead {
+        max-width: 620px;
+        margin: 0 auto var(--space-6);
+        color: var(--muted);
+        font-size: clamp(17px, 2vw, 20px);
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-3);
+        margin-bottom: var(--space-8);
+      }
+
+      /* ===== Stats ===== */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-4);
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .stat-card {
+        padding: var(--space-6) var(--space-4);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--paper);
+        box-shadow: var(--shadow-xs);
+        text-align: center;
+      }
+
+      .stat-number {
+        display: block;
+        font-size: clamp(28px, 4vw, 38px);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text-strong);
+        line-height: 1;
+      }
+
+      .stat-label {
+        display: block;
+        margin-top: var(--space-2);
+        color: var(--muted);
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+
+      /* ===== Projects ===== */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--space-5);
+      }
+
+      .proj-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+      }
+
+      .proj-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .proj-card.card--hover:hover::before { transform: scaleX(1); }
+
+      .proj-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--space-4);
+        border-radius: var(--radius-md);
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .proj-title {
+        margin: 0 0 var(--space-2);
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .proj-desc {
+        margin: 0 0 var(--space-4);
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.65;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-bottom: var(--space-5);
+      }
+
+      .proj-card .link { margin-top: auto; }
+
+      /* ===== Contact ===== */
+      .contact-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+
+      .contact-card {
+        max-width: 620px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .contact-card .label-strong {
+        display: block;
+        margin-bottom: var(--space-2);
+        color: var(--text-strong);
+        font-weight: 700;
+      }
+
+      .contact-card p {
+        margin: 0 0 var(--space-5);
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .email-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        align-items: center;
+      }
+
+      .email-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        color: var(--text-strong);
+        font-weight: 600;
+      }
+
+      .email-item span:last-child { user-select: all; }
+
+      @media (max-width: 640px) {
+        .stats { grid-template-columns: 1fr; max-width: 320px; }
+        .pill-eyebrow { white-space: normal; max-width: 100%; }
+        .hero-actions { flex-direction: column; align-items: stretch; }
+        .hero-actions .btn { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">
+          <span class="brand-mark">林</span>
+          <span>林宇航</span>
+        </a>
+        <div class="nav-links">
+          <a href="#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html">作品集</a>
+          <a href="blog.html">博客</a>
+          <a href="#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <span class="pill-eyebrow"><span class="dot"></span>Java Backend · Web Full Stack</span>
+          <h1>林宇航</h1>
+          <p class="lead">
+            专注 Java 后端开发与 Web 全栈工程。从接口设计到部署上线，追求简洁、稳定、可维护的工程实践。
+          </p>
+          <div class="hero-actions">
+            <a href="resume.html" class="btn btn--primary ripple">查看简历</a>
+            <a href="portfolio.html" class="btn btn--ghost">浏览作品</a>
+          </div>
+          <div class="stats">
+            <div class="stat-card animate-on-scroll fade-in-up">
+              <span class="stat-number" id="stat-projects">6+</span>
+              <span class="stat-label">完成项目</span>
+            </div>
+            <div class="stat-card animate-on-scroll fade-in-up animate-delay-1">
+              <span class="stat-number">10000+</span>
+              <span class="stat-label">累计访问</span>
+            </div>
+            <div class="stat-card animate-on-scroll fade-in-up animate-delay-2">
+              <span class="stat-number">9</span>
+              <span class="stat-label">荣获奖项</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Projects -->
+      <section class="section" id="featured">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">精选项目</span>
+            <h2 class="section-title">代表性工作</h2>
+            <p class="section-subtitle">
+              涵盖 AI 应用、实时数据可视化、全栈开发与自动化工程的落地实践。
+            </p>
+          </div>
+          <div class="projects-grid" id="featured-grid">
+            <div class="loading" style="grid-column:1/-1;">正在加载精选项目…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="section" id="contact">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">联系</span>
+            <h2 class="section-title">保持联系</h2>
+            <p class="section-subtitle">欢迎就技术交流、开源协作与项目合作与我联系。</p>
+          </div>
+          <div class="contact-actions">
+            <a href="https://github.com/Linyu-H" class="btn btn--dark ripple" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://gitee.com/lin-yuhang1113" class="btn btn--ghost" target="_blank" rel="noreferrer">Gitee</a>
+          </div>
+          <div class="card contact-card">
+            <strong class="label-strong">开放协作</strong>
+            <p>对技术交流、开源协作与项目合作持开放态度，直接邮箱联系即可：</p>
+            <div class="email-list">
+              <span class="email-item"><span>✉</span><span>lyh17742647697@gmail.com</span></span>
+              <span class="email-item"><span>✉</span><span>3170047405@qq.com</span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-links">
+            <a href="https://github.com/Linyu-H" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://gitee.com/lin-yuhang1113" target="_blank" rel="noreferrer">Gitee</a>
+            <a href="resume.html">简历</a>
+            <a href="portfolio.html">作品集</a>
+            <a href="blog.html">博客</a>
+            <a href="admin.html">管理</a>
+          </div>
+          <p class="footer-text">© 2025 林宇航 · Java Backend &amp; Web Full Stack Developer</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="./js/theme.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/micro-interactions.js"></script>
+    <script src="./js/particles.js"></script>
+    <script src="./js/contact.js"></script>
+    <script>
+      // ---- 首页精选项目动态加载 ----
+      function escapeHtml(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function projectIcon(p) {
+        const cat = p.category || '';
+        if (cat.includes('ai')) return 'AI';
+        if (cat.includes('backend')) return '⚙️';
+        if (cat.includes('automation')) return '🤖';
+        return '💼';
+      }
+
+      function renderFeaturedCard(p) {
+        const tags = (p.tech_stack || []).slice(0, 4)
+          .map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+        const link = p.demo_url
+          ? `<a href="${escapeHtml(p.demo_url)}" class="link link-arrow" target="_blank" rel="noreferrer">访问项目</a>`
+          : `<a href="project-detail.html?slug=${encodeURIComponent(p.slug)}" class="link link-arrow">查看详情</a>`;
+        return `
+          <article class="card card--hover proj-card animate-on-scroll fade-in-up">
+            <div class="proj-icon">${projectIcon(p)}</div>
+            <h3 class="proj-title">${escapeHtml(p.name)}</h3>
+            <p class="proj-desc">${escapeHtml(p.summary || '')}</p>
+            <div class="tags">${tags}</div>
+            ${link}
+          </article>`;
+      }
+
+      async function loadFeatured() {
+        const grid = document.getElementById('featured-grid');
+        try {
+          const fres = await fetch('/api/projects?featured=1');
+          const fresult = await fres.json();
+          const featured = (fresult.success && fresult.data) ? fresult.data : [];
+          grid.innerHTML = featured.map(renderFeaturedCard).join('') +
+            `<article class="card card--hover proj-card animate-on-scroll fade-in-up">
+              <div class="proj-icon">＋</div>
+              <h3 class="proj-title">更多项目</h3>
+              <p class="proj-desc">查看作品集，浏览全部项目与技术细节。</p>
+              <div class="tags"><span class="tag">全栈</span><span class="tag">后端</span><span class="tag">自动化</span></div>
+              <a href="portfolio.html" class="link link-arrow">查看全部</a>
+            </article>`;
+
+          // 用真实项目总数更新统计
+          const ares = await fetch('/api/projects');
+          const aresult = await ares.json();
+          if (aresult.success) {
+            const el = document.getElementById('stat-projects');
+            if (el) el.textContent = aresult.data.length + '+';
+          }
+        } catch (e) {
+          console.error('加载精选项目失败:', e);
+          grid.innerHTML = `<div class="loading" style="grid-column:1/-1;">加载失败，请稍后重试</div>`;
+        }
+        window.dispatchEvent(new Event('contentLoaded'));
+      }
+
+      loadFeatured();
+    </script>
+  </body>
+</html>

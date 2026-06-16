@@ -1,0 +1,33 @@
+services:
+  web:
+    build: .
+    image: personal-website:latest
+    container_name: personal-website
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-10000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # 管理后台密码（务必修改）
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      # 站点 URL
+      SITE_URL: ${SITE_URL:-http://localhost:10000}
+      # 邮件配置（可选，不填则联系表单仅入库不发信）
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+    volumes:
+      # 持久化 SQLite 数据库
+      - site-data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/projects',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  site-data:

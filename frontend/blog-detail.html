@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="博客详情" />
+    <title>博客详情 | 林宇航</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <link rel="stylesheet" href="./css/micro-interactions.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.css" />
+    <style>
+      .blog-detail-container {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: var(--space-7) var(--space-5) var(--space-9);
+      }
+
+      .blog-header {
+        margin-bottom: var(--space-6);
+        padding-bottom: var(--space-5);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .blog-title {
+        margin: 0 0 var(--space-4);
+        font-size: clamp(28px, 5vw, 42px);
+        font-weight: 800;
+        line-height: 1.18;
+        letter-spacing: -0.025em;
+      }
+
+      .blog-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .blog-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-top: var(--space-4);
+      }
+
+      .blog-tag {
+        padding: 5px 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-pill);
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+
+      .blog-content {
+        font-size: 17px;
+        line-height: 1.85;
+        color: var(--text);
+      }
+
+      .blog-content h1,
+      .blog-content h2,
+      .blog-content h3 {
+        margin-top: var(--space-7);
+        margin-bottom: var(--space-4);
+        line-height: 1.3;
+        color: var(--text-strong);
+      }
+
+      .blog-content h1 { font-size: 30px; letter-spacing: -0.02em; }
+      .blog-content h2 { font-size: 24px; letter-spacing: -0.015em; }
+      .blog-content h3 { font-size: 20px; }
+
+      .blog-content p { margin-bottom: var(--space-5); }
+
+      .blog-content a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .blog-content code {
+        padding: 2px 7px;
+        border-radius: var(--radius-sm);
+        background: var(--surface-2);
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+      }
+
+      .blog-content pre {
+        margin: var(--space-6) 0;
+        padding: var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: #0d1526;
+        overflow-x: auto;
+      }
+
+      .blog-content pre code {
+        padding: 0;
+        background: none;
+        color: #e5e7eb;
+        font-size: 14px;
+      }
+
+      .blog-content ul,
+      .blog-content ol {
+        margin-bottom: var(--space-5);
+        padding-left: 1.4em;
+      }
+
+      .blog-content li { margin-bottom: var(--space-2); }
+
+      .blog-content blockquote {
+        margin: var(--space-6) 0;
+        padding: var(--space-4) var(--space-5);
+        border-left: 3px solid var(--accent);
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        background: var(--surface-2);
+        color: var(--muted);
+      }
+
+      .blog-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-6) 0;
+      }
+
+      .blog-nav {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-top: var(--space-8);
+        padding-top: var(--space-5);
+        border-top: 1px solid var(--line);
+      }
+
+      .blog-nav-btn {
+        flex: 1;
+        min-height: 44px;
+        padding: 11px 18px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        color: var(--text-strong);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+
+      .blog-nav-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      @media (max-width: 768px) {
+        .blog-detail-container { padding: var(--space-6) var(--space-4) var(--space-8); }
+        .blog-content { font-size: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- Navigation -->
+      <nav class="nav">
+        <a class="brand" href="/">
+          <span class="brand-mark">林</span>
+          <span>林宇航</span>
+        </a>
+        <div class="nav-links">
+          <a href="/#featured">项目</a>
+          <a href="resume.html">简历</a>
+          <a href="portfolio.html">作品集</a>
+          <a href="blog.html" class="active">博客</a>
+          <a href="/#contact">联系</a>
+        </div>
+      </nav>
+
+      <!-- Blog Content -->
+      <main class="blog-detail-container" id="blog-content">
+        <div class="loading">正在加载文章…</div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/bash.min.js"></script>
+    <script src="./js/theme.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/micro-interactions.js"></script>
+    <script src="./js/particles.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
+
+      if (!slug) {
+        showError('文章不存在');
+      } else {
+        loadBlogDetail(slug);
+      }
+
+      async function loadBlogDetail(slug) {
+        try {
+          const response = await fetch(`/api/blogs/${slug}`);
+          const result = await response.json();
+          if (result.success) {
+            renderBlog(result.data);
+          } else {
+            showError('文章不存在');
+          }
+        } catch (error) {
+          console.error('加载失败:', error);
+          showError('加载失败，请稍后重试');
+        }
+      }
+
+      function renderBlog(blog) {
+        document.title = `${blog.title} | 林宇航`;
+
+        marked.setOptions({
+          highlight: function(code, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+              return hljs.highlight(code, { language: lang }).value;
+            }
+            return hljs.highlightAuto(code).value;
+          },
+          breaks: true,
+          gfm: true
+        });
+
+        const htmlContent = marked.parse(blog.content);
+
+        document.getElementById('blog-content').innerHTML = `
+          <article class="animate-on-scroll fade-in-up">
+            <header class="blog-header">
+              <h1 class="blog-title">${blog.title}</h1>
+              <div class="blog-meta">
+                <span>📅 ${new Date(blog.created_at).toLocaleDateString('zh-CN', {
+                  year: 'numeric', month: 'long', day: 'numeric'
+                })}</span>
+                <span>👁️ ${blog.views} 次阅读</span>
+                <span>⏱️ 约 ${Math.ceil(blog.content.length / 400)} 分钟</span>
+              </div>
+              ${blog.tags.length > 0 ? `
+                <div class="blog-tags">
+                  ${blog.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                </div>
+              ` : ''}
+            </header>
+            <div class="blog-content">${htmlContent}</div>
+            <nav class="blog-nav">
+              <button onclick="location.href='blog.html'" class="blog-nav-btn ripple">← 返回博客列表</button>
+              <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="blog-nav-btn ripple">回到顶部 ↑</button>
+            </nav>
+          </article>
+        `;
+
+        window.dispatchEvent(new Event('contentLoaded'));
+      }
+
+      function showError(message) {
+        document.getElementById('blog-content').innerHTML = `
+          <div class="loading">
+            <p>${message}</p>
+            <button onclick="location.href='blog.html'" class="btn btn--primary ripple" style="margin-top: 24px;">
+              返回博客列表
+            </button>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
