@@ -9,7 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --omit=dev
+# 国内镜像源加速：registry 走 npmmirror，better-sqlite3 预编译二进制也走 npmmirror 镜像
+# （用 npm_config_* 环境变量传递，避免新版 npm config set 校验未知键报错）
+ENV npm_config_better_sqlite3_binary_host_mirror=https://registry.npmmirror.com/-/binary/better-sqlite3
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm ci --omit=dev --no-audit --no-fund
 
 # ---------- 运行阶段：精简镜像 ----------
 FROM node:22-slim AS runner
